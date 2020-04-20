@@ -103,6 +103,7 @@ module Decidim
       attribute :editor, Boolean, default: false
       attribute :required, Boolean, default: false
       attribute :required_for_authorization, Boolean, default: false
+      attribute :disabled
       attribute :choices
 
       validates :type, inclusion: { in: TYPES.keys }
@@ -117,6 +118,10 @@ module Decidim
 
       def build_choices
         choices.try(:call) || choices
+      end
+
+      def disabled?(context)
+        disabled&.call(context)
       end
     end
   end
