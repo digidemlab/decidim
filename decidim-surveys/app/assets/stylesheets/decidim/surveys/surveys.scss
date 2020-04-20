@@ -1,33 +1,44 @@
 @import "decidim/forms/forms";
 
-form.answer-questionnaire{
+.answer-questionnaire {
   .radio-button-collection,
   .check-box-collection,
-  .sortable-check-box-collection{
+  .sortable-check-box-collection {
     margin: 0 0 1rem;
   }
 
-  .tos-agreement{
+  .tos-agreement {
     margin: 1rem 0 0;
 
-    .help-text{
-      margin: .2rem 0 0;
+    .help-text {
+      margin: 0.2rem 0 0;
     }
   }
 
-  label.questionnaire-question{
+  label.questionnaire-question {
     font-weight: bold;
   }
 
-  .help-text{
-    margin-top: .5em;
+  .help-text {
+    margin-top: 0.5em;
 
-    .ql-video{
-      margin: .5em auto;
+    .ql-video {
+      margin: 0.5em auto;
     }
   }
 
-  .last-sorted{
+  .last-sorted {
     margin-bottom: 1rem;
+  }
+
+  &__steps {
+    font-size: 0.8rem;
+  }
+
+  &__submit {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    margin-top: 2rem;
   }
 }
