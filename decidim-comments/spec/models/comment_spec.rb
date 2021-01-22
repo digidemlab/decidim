@@ -197,7 +197,7 @@ module Decidim
 
         describe "#body_length" do
           context "when no default comments length specified" do
-            let!(:body) { { en: ::Faker::Lorem.sentence(1000) } }
+            let!(:body) { { en: ::Faker::Lorem.sentence(word_count: 1000) } }
 
             it "is invalid" do
               comment.body = body
@@ -207,7 +207,7 @@ module Decidim
           end
 
           context "when organization has a default comments length params" do
-            let!(:body) { { en: ::Faker::Lorem.sentence(1600) } }
+            let!(:body) { { en: ::Faker::Lorem.sentence(word_count: 1600) } }
             let(:organization) { create(:organization, comments_max_length: 1500) }
             let(:component) { create(:component, organization: organization, manifest_name: "dummy") }
             let!(:commentable) { create(:dummy_resource, component: component) }
@@ -219,7 +219,7 @@ module Decidim
             end
 
             context "when component has a default comments length params" do
-              let!(:body) { { en: ::Faker::Lorem.sentence(2500) } }
+              let!(:body) { { en: ::Faker::Lorem.sentence(word_count: 2500) } }
 
               it "is invalid" do
                 component.update!(settings: { comments_max_length: 2000 })
@@ -228,35 +228,6 @@ module Decidim
                 expect(subject.errors[:body]).to eq ["is too long (maximum is 2000 characters)"]
               end
             end
-          end
-        end
-      end
-
-      describe "#user_commentators_ids_in" do
-        context "when commentors belong to the given resources" do
-          it "returns the autors of the resources' comments" do
-            ids = Decidim::Comments::Comment.user_commentators_ids_in(Decidim::DummyResources::DummyResource.where(component: commentable.component))
-            expect(ids).to match_array([author.id])
-          end
-        end
-
-        context "when commentors do not belong to the given resources" do
-          let(:other_component) { create(:dummy_component) }
-          let!(:other_commentable) { create(:dummy_resource, component: other_component) }
-
-          it "does not return them" do
-            ids = Decidim::Comments::Comment.user_commentators_ids_in(Decidim::DummyResources::DummyResource.where(component: commentable.component))
-            expect(ids).to match_array([author.id])
-          end
-        end
-
-        context "when resource is not commentable" do
-          let(:other_component) { create(:dummy_component) }
-          let!(:non_commentable) { create(:coauthorable_dummy_resource, component: other_component) }
-
-          it "returns nil" do
-            ids = Decidim::Comments::Comment.user_commentators_ids_in(Decidim::DummyResources::CoauthorableDummyResource.where(component: other_component))
-            expect(ids).to be_nil
           end
         end
       end
